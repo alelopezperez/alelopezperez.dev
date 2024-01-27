@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# temp until i get the game smaller
+src/pong_bg.wasm
