@@ -1,10 +1,10 @@
-use bevy::prelude::*;
+use bevy::{prelude::*, window::PrimaryWindow};
 
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
         .add_systems(Startup, setup)
-        .add_systems(Update, move_player_left)
+        .add_systems(Update, (move_player_left, confine_players))
         .run();
 }
 
@@ -32,5 +32,31 @@ fn move_player_left(
         if input.pressed(KeyCode::S) {
             transform.translation.y -= 100.0 * time.delta_seconds();
         }
+    }
+}
+
+fn confine_players(
+    mut players: Query<(&mut Transform, &Sprite)>,
+    window: Query<&Window, With<PrimaryWindow>>,
+) {
+    for (mut transform, player) in players.iter_mut() {
+        let window = window.get_single().unwrap();
+
+        let player_center = (100.0, 100.0);
+
+        let y_min = -(window.height() / 2.0) + 100.0;
+        let y_max = (window.height() / 2.0) - 100.0;
+
+        if transform.translation.y < y_min {
+            transform.translation.y = y_min;
+        } else if transform.translation.y > y_max {
+            transform.translation.y = y_max;
+        }
+
+        println!(
+            "transform {:?} windoe:{}",
+            transform.translation,
+            window.height()
+        );
     }
 }
