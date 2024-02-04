@@ -9,7 +9,10 @@ fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
         .add_systems(Startup, setup)
-        .add_systems(Update, (move_player_left, confine_players, move_pong))
+        .add_systems(
+            Update,
+            (move_player_left, confine_players, move_pong, collision_pong),
+        )
         .run();
 }
 
@@ -28,7 +31,10 @@ fn setup(
     commands.spawn(SpriteBundle {
         sprite: Sprite {
             custom_size: Some(Vec2::new(100.0, 200.0)),
-            anchor: bevy::sprite::Anchor::Custom(Vec2::new(5.0, 0.0)),
+            ..default()
+        },
+        transform: Transform {
+            translation: Vec3::new(-500.0, 0.0, 0.0),
             ..default()
         },
         ..default()
@@ -56,6 +62,7 @@ fn move_player_left(
         if input.pressed(KeyCode::S) {
             transform.translation.y -= 100.0 * time.delta_seconds();
         }
+        println!("PLAYER:{}", transform.translation);
     }
 }
 
@@ -66,8 +73,7 @@ fn move_pong(mut pong: Query<(&mut Transform, &Angle, &Mesh2dHandle)>, time: Res
 
     transform.translation.x += 100.0 * x * time.delta_seconds();
     transform.translation.y += 100.0 * y * time.delta_seconds();
-
-    println!("HOLA:{} {} {:#}", x, y, transform.translation);
+    println!("pong {:?}", transform.translation);
 }
 
 fn collision_pong(
@@ -75,8 +81,12 @@ fn collision_pong(
     mut players: Query<(&Transform, &Sprite)>,
     time: Res<Time>,
 ) {
-    let (pong_pos, mut pong_angle, _) = pong.get_single_mut().unwrap();
-    for (player_pos, _) in players.iter() {}
+    let (pong_pos, mut pong_angle, pong_circle) = pong.get_single_mut().unwrap();
+    for (player_pos, _) in players.iter() {
+        if (pong_pos.translation.x - 25.0) <= (player_pos.translation.x + 50.0) {
+            *pong_angle = Angle(0.0);
+        }
+    }
 }
 
 fn confine_players(
@@ -96,11 +106,5 @@ fn confine_players(
         } else if transform.translation.y > y_max {
             transform.translation.y = y_max;
         }
-
-        println!(
-            "transform {:?} windoe:{}",
-            transform.translation,
-            window.height()
-        );
     }
 }
