@@ -1,3 +1,5 @@
+use std::cmp::min;
+
 use bevy::{
     prelude::*,
     sprite::{Material2d, MaterialMesh2dBundle, Mesh2dHandle},
@@ -83,10 +85,34 @@ fn collision_pong(
 ) {
     let (pong_pos, mut pong_angle, pong_circle) = pong.get_single_mut().unwrap();
     for (player_pos, _) in players.iter() {
-        if (pong_pos.translation.x - 25.0) <= (player_pos.translation.x + 50.0) {
+        let player_x_min = player_pos.translation.x - 50.;
+        let player_x_max = player_pos.translation.x + 50.;
+        let player_y_min = player_pos.translation.y - 100.;
+        let player_y_max = player_pos.translation.y + 100.;
+
+        let point = (
+            player_x_min.max(pong_pos.translation.x.min(player_x_max)),
+            player_y_min.max(pong_pos.translation.y.min(player_y_max)),
+        );
+
+        println!(
+            "{:?}   -  {:?}    -  {:?}",
+            point,
+            (pong_pos.translation.x, pong_pos.translation.y),
+            (player_pos.translation.x, player_pos.translation.y)
+        );
+        if collision_point_circle(point, (pong_pos.translation.x, pong_pos.translation.y, 25.)) {
             *pong_angle = Angle(0.0);
         }
     }
+}
+
+fn collision_point_circle(point: (f32, f32), circle: (f32, f32, f32)) -> bool {
+    println!(
+        "HIIIIII {}",
+        ((point.0 - circle.0).abs().powi(2) + (point.1 - circle.1).abs().powi(2)).sqrt()
+    );
+    ((point.0 - circle.0).abs().powi(2) + (point.1 - circle.1).abs().powi(2)).sqrt() <= circle.2
 }
 
 fn confine_players(
