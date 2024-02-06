@@ -95,12 +95,6 @@ fn collision_pong(
             player_y_min.max(pong_pos.translation.y.min(player_y_max)),
         );
 
-        println!(
-            "{:?}   -  {:?}    -  {:?}",
-            point,
-            (pong_pos.translation.x, pong_pos.translation.y),
-            (player_pos.translation.x, player_pos.translation.y)
-        );
         if collision_point_circle(point, (pong_pos.translation.x, pong_pos.translation.y, 25.)) {
             *pong_angle = Angle(0.0);
         }
