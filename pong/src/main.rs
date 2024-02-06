@@ -1,9 +1,6 @@
-use std::cmp::min;
-
 use bevy::{
     prelude::*,
-    sprite::{Material2d, MaterialMesh2dBundle, Mesh2dHandle},
-    transform,
+    sprite::{MaterialMesh2dBundle, Mesh2dHandle},
     window::PrimaryWindow,
 };
 
@@ -69,7 +66,7 @@ fn move_player_left(
 }
 
 fn move_pong(mut pong: Query<(&mut Transform, &Angle, &Mesh2dHandle)>, time: Res<Time>) {
-    let (mut transform, angle, pong) = pong.get_single_mut().unwrap();
+    let (mut transform, angle, _pong) = pong.get_single_mut().unwrap();
     let x = angle.0.to_radians().cos();
     let y = angle.0.to_radians().sin();
 
@@ -80,10 +77,9 @@ fn move_pong(mut pong: Query<(&mut Transform, &Angle, &Mesh2dHandle)>, time: Res
 
 fn collision_pong(
     mut pong: Query<(&Transform, &mut Angle, &Mesh2dHandle)>,
-    mut players: Query<(&Transform, &Sprite)>,
-    time: Res<Time>,
+    players: Query<(&Transform, &Sprite)>,
 ) {
-    let (pong_pos, mut pong_angle, pong_circle) = pong.get_single_mut().unwrap();
+    let (pong_pos, mut pong_angle, _pong_circle) = pong.get_single_mut().unwrap();
     for (player_pos, _) in players.iter() {
         let player_x_min = player_pos.translation.x - 50.;
         let player_x_max = player_pos.translation.x + 50.;
@@ -113,10 +109,10 @@ fn confine_players(
     mut players: Query<(&mut Transform, &Sprite)>,
     window: Query<&Window, With<PrimaryWindow>>,
 ) {
-    for (mut transform, player) in players.iter_mut() {
+    for (mut transform, _player) in players.iter_mut() {
         let window = window.get_single().unwrap();
 
-        let player_center = (100.0, 100.0);
+        // let player_center = (100.0, 100.0);
 
         let y_min = -(window.height() / 2.0) + 100.0;
         let y_max = (window.height() / 2.0) - 100.0;
