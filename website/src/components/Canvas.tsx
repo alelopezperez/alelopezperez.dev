@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import init, * as wasm from "../../public/wasm.js";
 
-const Canvas = (props) => {
+const Canvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [file, setFile] = useState<null | Uint8Array>(null);
@@ -21,13 +21,16 @@ const Canvas = (props) => {
     context.fillRect(0, 0, 64 * 16, 32 * 16);
   }, []);
 
-  async function handleChange(event: { target: { files: Blob[] } }) {
+  async function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     await init();
     let chip8 = new wasm.Emulator();
     const reader = new FileReader();
     reader.onload = async (e) => {
       const bf = reader.result;
       if (bf == null) {
+        return;
+      }
+      if (typeof bf == "string") {
         return;
       }
       const rom = new Uint8Array(bf);
@@ -46,6 +49,14 @@ const Canvas = (props) => {
       });
       game_loop(chip8, canvas);
     };
+    if (
+      event == null ||
+      event.target == null ||
+      event.target.files == null ||
+      event.target.files[0] == null
+    ) {
+      return;
+    }
     reader.readAsArrayBuffer(event.target.files[0]);
   }
 
@@ -87,13 +98,7 @@ const Canvas = (props) => {
 
   return (
     <div>
-      <canvas
-        height={32 * 20}
-        width={64 * 20}
-        id="canvas"
-        ref={canvasRef}
-        {...props}
-      />
+      <canvas height={32 * 20} width={64 * 20} id="canvas" ref={canvasRef} />
       <div className="App">
         <form>
           <h1>React File Upload</h1>
