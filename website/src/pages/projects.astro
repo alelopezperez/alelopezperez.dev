@@ -1,5 +1,6 @@
 ---
 import MainLayout from "../Layouts/MainLayout.astro";
+import { Image } from 'astro:assets';
 import {
   Card,
   CardContent,
@@ -15,7 +16,7 @@ import {
           <CardTitle>Chip-8 Emulator</CardTitle>
         </CardHeader>
         <CardContent>
-          <img src="../../public/chip8.png">
+          <img src="./chip8.png" />
         </CardContent>
         <CardFooter>
           <p>Rust Implementation of chip8 virtual machine and compiled to wasm</p>
