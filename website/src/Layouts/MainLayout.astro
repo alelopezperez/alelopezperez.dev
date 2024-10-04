@@ -1,0 +1,16 @@
+---
+import MainHead from "./MainHead.astro";
+import '@/styles/globals.css'
+const {title} = Astro.props;
+---
+<html lang="en">
+    <MainHead title={title} />
+	<body class="bg-zinc-800">
+        <nav class="w-full h-10">
+            <a href="#">Home</a>
+            <a href="/projects">Projects</a>
+            <a href="#">Resume</a>
+        </nav>
+        <slot />
+	</body>
+</html>
