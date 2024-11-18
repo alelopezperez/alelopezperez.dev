@@ -1,6 +1,38 @@
 ---
-import MainLayout from "../Layouts/MainLayout.astro";
+import MainLayout from '../Layouts/MainLayout.astro';
+import { Image } from 'astro:assets';
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle
+} from '@/components/ui/card';
 ---
+
 <MainLayout title="Home">
-    <p class="text-orange-500">Hi from Home</p>
+	<main class="flex-grow">
+		<section class="container mx-auto px-4 py-10">
+			<h1 class="mb-8 text-4xl font-bold text-[#ebdbb2]">Projects</h1>
+			<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+				<a href="/projects/chip8">
+					<Card className="w-[350px] cursor-pointer">
+						<CardHeader>
+							<CardTitle>Chip-8 Emulator</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<img src="./chip8.png" />
+						</CardContent>
+						<CardFooter>
+							<p>
+								Rust Implementation of chip8 virtual
+								machine and compiled to WASM
+							</p>
+						</CardFooter>
+					</Card>
+				</a>
+			</div>
+		</section>
+	</main>
 </MainLayout>

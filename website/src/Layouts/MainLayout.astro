@@ -1,16 +1,41 @@
 ---
-import MainHead from "./MainHead.astro";
-import '@/styles/globals.css'
-const {title} = Astro.props;
+import MainHead from './MainHead.astro';
+import '@/styles/globals.css';
+const { title } = Astro.props;
 ---
+
 <html lang="en">
-    <MainHead title={title} />
+	<MainHead title={title} />
 	<body class="bg-zinc-800">
-        <nav class="w-full h-10">
-            <a href="#">Home</a>
-            <a href="/projects">Projects</a>
-            <a href="#">Resume</a>
-        </nav>
-        <slot />
+		<div class="flex min-h-screen flex-col">
+			<header class="sticky top-0 z-10 bg-[#32302f] py-4 shadow-md">
+				<nav
+					class="container mx-auto flex items-center justify-between px-4"
+				>
+					<a
+						href="/"
+						class="text-2xl font-bold text-[#d65d0e] hover:text-white"
+						>alelopezperez.dev</a
+					>
+					<ul class="flex space-x-4">
+						<li>
+							<a
+								href="#"
+								class="text-[#d65d0e] hover:text-white"
+								>Projects</a
+							>
+						</li>
+						<li>
+							<a
+								href="#"
+								class="text-[#d65d0e] hover:text-white"
+								>About Me</a
+							>
+						</li>
+					</ul>
+				</nav>
+			</header>
+			<slot />
+		</div>
 	</body>
 </html>
