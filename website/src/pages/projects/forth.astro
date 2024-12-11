@@ -1,25 +1,17 @@
 ---
-import Cli from '@/components/Malbolge';
+import CliForth from '../../components/Forth';
 import MainLayout from '../../Layouts/MainLayout.astro';
-const hello =
-	'(=<`#9]~6ZY327Uv4-QsqpMn&+Ij"\'E%e{Ab~w=_:]Kw%o44Uqp0/Q?xNvL:`H%c#DD2^WV>gY;dts76qKJImZkj';
 ---
 
 <MainLayout title="Home">
 	<section class="py-16">
 		<div class="container mx-auto flex flex-col items-center px-4">
 			<h2 class="mb-8 text-center text-4xl font-bold text-[#fbf1c7]">
-				Malbolge Interpreter
+				Forth Interpreter
 			</h2>
 			<div class="w-full max-w-2xl p-8">
-				<p class="mb-6 text-white">
-					Malbolge Interpreter build in Rust, and compiled to WASM to
-					be used on this website. Currently this Wasm version does
-					not implement input. Sample Hello World:
-				</p>
-				<p class="mb-6 text-white">
-					{hello}
-				</p>
+				<p class="mb-6 text-white"></p>
+				<p class="mb-6 text-white"></p>
 
 				<div class="flex justify-center">
 					<a
@@ -43,7 +35,7 @@ const hello =
 				</div>
 			</div>
 
-			<Cli client:load />
+			<CliForth client:load />
 		</div>
 	</section>
 </MainLayout>
