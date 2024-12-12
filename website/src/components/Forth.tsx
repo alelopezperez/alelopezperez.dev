@@ -35,7 +35,7 @@ export default function CliForth() {
 		setInput(e.target.value);
 	};
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = () => {
 		let out = interpreter?.exec(input);
 		if (out == undefined) {
 			return;
@@ -49,7 +49,16 @@ export default function CliForth() {
 		setInput('');
 	};
 	return (
-		<div className="mx-auto w-full max-w-2xl rounded-lg bg-black p-4 shadow-lg">
+		<div
+			className="mx-auto w-full max-w-2xl rounded-lg bg-black p-4 shadow-lg"
+			tabIndex={-1}
+			onKeyDown={(e) => {
+				if (e.key == 'Enter') {
+					console.log('je');
+					handleSubmit();
+				}
+			}}
+		>
 			<div className="mb-4 h-96 overflow-auto bg-black p-2 font-mono text-sm text-green-400">
 				<p ref={refi}></p>
 			</div>
@@ -61,13 +70,6 @@ export default function CliForth() {
 					className="flex-grow border-gray-700 bg-gray-800 text-white"
 					placeholder="Enter a Forth command..."
 				/>
-				<Button
-					type="submit"
-					onClick={handleSubmit}
-					className="bg-green-600 text-white hover:bg-green-700"
-				>
-					Run
-				</Button>
 			</div>
 		</div>
 	);
